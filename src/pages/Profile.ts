@@ -1,4 +1,14 @@
-export const ProfilePage = () => `
+import { router } from "@/core/router";
+
+export const ProfilePage = () => {
+  // TODO: 로그인 상태 확인 로직
+
+  if (true) {
+    router.navigateTo("/login");
+    return;
+  }
+
+  return `
   <div id="root">
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
@@ -80,3 +90,4 @@ export const ProfilePage = () => `
     </div>
   </div>
 `;
+};
