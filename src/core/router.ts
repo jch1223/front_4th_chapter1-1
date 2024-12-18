@@ -2,6 +2,7 @@ import { MainPage } from "@/pages/Main";
 import { ErrorPage } from "@/pages/Error";
 import { LoginPage } from "@/pages/Login";
 import { ProfilePage } from "@/pages/Profile";
+import { userStore } from "@/store/userStore";
 
 const createRouter = (routes: { [key: string]: () => void }) => {
   return {
@@ -16,10 +17,24 @@ const createRouter = (routes: { [key: string]: () => void }) => {
   };
 };
 
+const routeGuard = (render: () => void) => () => {
+  if (window.location.pathname !== "/login" && !userStore.getUser()) {
+    router.navigateTo("/login");
+    return;
+  }
+
+  if (window.location.pathname === "/login" && userStore.getUser()) {
+    router.navigateTo("/");
+    return;
+  }
+
+  render();
+};
+
 const routes = {
   "/": MainPage.render,
-  "/login": LoginPage.render,
-  "/profile": ProfilePage.render,
+  "/login": routeGuard(LoginPage.render),
+  "/profile": routeGuard(ProfilePage.render),
   "/error": ErrorPage.render,
 };
 
