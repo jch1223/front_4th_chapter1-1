@@ -2,16 +2,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Navigator } from "@/components/Navigator";
 import { router } from "@/core/router";
+import { User, userStore } from "@/store/userStore";
 
 const PROFILE_FORM_ID = "profile-form";
 
-export const ProfilePage = ({
-  username,
-  email,
-  bio,
-}: {
-  [key: string]: string;
-}) => `
+export const ProfilePage = ({ username, email, bio }: User) => `
   <div id="root">
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
@@ -84,17 +79,16 @@ export const ProfilePage = ({
 `;
 
 ProfilePage.render = () => {
+  if (!userStore.getUser()) {
+    router.navigateTo("/login");
+    return;
+  }
+
   const $root = document.querySelector("#root");
 
   if (!$root) return;
 
-  const localStorageUser = localStorage.getItem("user");
-  const user = localStorageUser ? JSON.parse(localStorageUser) : null;
-
-  if (!user) {
-    router.navigateTo("/login");
-    return;
-  }
+  const user = userStore.getUser();
 
   $root.innerHTML = ProfilePage(user);
 
@@ -104,22 +98,19 @@ ProfilePage.render = () => {
       const $form = e.target as HTMLFormElement;
       const formData = new FormData($form);
 
-      const email = formData.get("email");
-      const username = formData.get("username");
-      const bio = formData.get("bio");
+      const email = formData.get("email")?.toString();
+      const username = formData.get("username")?.toString();
+      const bio = formData.get("bio")?.toString();
 
       if (!username) {
         alert("유저이름을 입력해주세요");
         return;
       }
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          username,
-          email,
-          bio,
-        }),
-      );
+      userStore.setUser({
+        username,
+        email,
+        bio,
+      });
     });
 };

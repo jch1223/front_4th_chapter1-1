@@ -1,4 +1,5 @@
 import { router } from "@/core/router";
+import { userStore } from "@/store/userStore";
 
 const LOGIN_FORM_ID = "login-form";
 
@@ -40,26 +41,28 @@ LoginPage.render = () => {
   document
     .querySelector(`#${LOGIN_FORM_ID}`)
     ?.addEventListener("submit", (e) => {
+      if (userStore.getUser()) {
+        router.navigateTo("/");
+        return;
+      }
+
       const $form = e.target as HTMLFormElement;
       const formData = new FormData($form);
 
-      const email = formData.get("email");
-      const username = formData.get("username");
-      const bio = formData.get("bio");
+      const email = formData.get("email")?.toString();
+      const username = formData.get("username")?.toString();
+      const bio = formData.get("bio")?.toString();
 
       if (!username) {
         alert("유저이름을 입력해주세요");
         return;
       }
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          username,
-          email,
-          bio,
-        }),
-      );
+      userStore.setUser({
+        username,
+        email,
+        bio,
+      });
 
       router.navigateTo("/");
     });
