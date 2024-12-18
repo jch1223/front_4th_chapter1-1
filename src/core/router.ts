@@ -20,13 +20,7 @@ const routes = {
   "/": MainPage.render,
   "/login": LoginPage.render,
   "/profile": ProfilePage.render,
-  "/error": () => {
-    const $root = document.querySelector("#root");
-
-    if (!$root) return;
-
-    $root.innerHTML = ErrorPage();
-  },
+  "/error": ErrorPage.render,
 };
 
 const router = createRouter(routes);
