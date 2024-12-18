@@ -1,14 +1,14 @@
 import { router } from "@/core/router";
 
-export const ProfilePage = () => {
-  // TODO: 로그인 상태 확인 로직
+const PROFILE_FORM_ID = "profile-form";
 
-  if (true) {
-    router.navigateTo("/login");
-    return;
-  }
-
-  return `
+export const ProfilePage = ({
+  username,
+  email,
+  bio,
+}: {
+  [key: string]: string;
+}) => `
   <div id="root">
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
@@ -20,7 +20,7 @@ export const ProfilePage = () => {
           <ul class="flex justify-around">
             <li><a href="/" class="text-gray-600">홈</a></li>
             <li><a href="/profile" class="text-blue-600">프로필</a></li>
-            <li><a href="#" class="text-gray-600">로그아웃</a></li>
+            <li><a id="logout" href="/login" class="text-gray-600">로그아웃</a></li>
           </ul>
         </nav>
 
@@ -29,7 +29,7 @@ export const ProfilePage = () => {
             <h2 class="text-2xl font-bold text-center text-blue-600 mb-8">
               내 프로필
             </h2>
-            <form>
+            <form id="${PROFILE_FORM_ID}">
               <div class="mb-4">
                 <label
                   for="username"
@@ -40,7 +40,7 @@ export const ProfilePage = () => {
                   type="text"
                   id="username"
                   name="username"
-                  value="홍길동"
+                  value="${username}"
                   class="w-full p-2 border rounded"
                 />
               </div>
@@ -54,7 +54,7 @@ export const ProfilePage = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value="hong@example.com"
+                  value="${email}"
                   class="w-full p-2 border rounded"
                 />
               </div>
@@ -70,8 +70,8 @@ export const ProfilePage = () => {
                   rows="4"
                   class="w-full p-2 border rounded"
                 >
-안녕하세요, 항해플러스에서 열심히 공부하고 있는 홍길동입니다.</textarea
-                >
+                  ${bio}
+                </textarea>
               </div>
               <button
                 type="submit"
@@ -90,4 +90,44 @@ export const ProfilePage = () => {
     </div>
   </div>
 `;
+
+ProfilePage.render = () => {
+  const $root = document.querySelector("#root");
+
+  if (!$root) return;
+
+  const localStorageUser = localStorage.getItem("user");
+  const user = localStorageUser ? JSON.parse(localStorageUser) : null;
+
+  if (!user) {
+    router.navigateTo("/login");
+    return;
+  }
+
+  $root.innerHTML = ProfilePage(user);
+
+  document
+    .querySelector(`#${PROFILE_FORM_ID}`)
+    ?.addEventListener("submit", (e) => {
+      const $form = e.target as HTMLFormElement;
+      const formData = new FormData($form);
+
+      const email = formData.get("email");
+      const username = formData.get("username");
+      const bio = formData.get("bio");
+
+      if (!username) {
+        alert("유저이름을 입력해주세요");
+        return;
+      }
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username,
+          email,
+          bio,
+        }),
+      );
+    });
 };
