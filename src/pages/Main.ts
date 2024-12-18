@@ -1,3 +1,5 @@
+const LOGOUT_ID = "logout";
+
 export const MainPage = () => `
   <div class="bg-gray-100 min-h-screen flex justify-center">
     <div class="max-w-md w-full">
@@ -9,7 +11,7 @@ export const MainPage = () => `
         <ul class="flex justify-around">
           <li><a href="/" class="text-blue-600">홈</a></li>
           <li><a href="/profile" class="text-gray-600">프로필</a></li>
-          <li><a href="#" class="text-gray-600">로그아웃</a></li>
+          <li><a id=${LOGOUT_ID} href="/login" class="text-gray-600">로그아웃</a></li>
         </ul>
       </nav>
 
@@ -109,3 +111,15 @@ export const MainPage = () => `
     </div>
   </div>
 `;
+
+MainPage.render = () => {
+  const $root = document.querySelector("#root");
+
+  if (!$root) return;
+
+  $root.innerHTML = MainPage();
+
+  document.querySelector(`#${LOGOUT_ID}`)?.addEventListener("click", () => {
+    localStorage.removeItem("user");
+  });
+};

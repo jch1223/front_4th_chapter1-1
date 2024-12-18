@@ -1,13 +1,21 @@
-export const LoginPage = () => `
+import { router } from "@/core/router";
+
+const LOGIN_FORM_ID = "login-form";
+
+export const LoginPage = () => {
+  return `
   <main class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
       <h1 class="text-2xl font-bold text-center text-blue-600 mb-8">항해플러스</h1>
-      <form>
+      <form id=${LOGIN_FORM_ID}>
+      <div class="mb-6">
+        <input id="username" type="username" name="username" placeholder="유저이름" class="w-full p-2 border rounded">
+      </div>
         <div class="mb-4">
-          <input type="text" placeholder="이메일 또는 전화번호" class="w-full p-2 border rounded">
+          <input type="text" name="email" placeholder="이메일 또는 전화번호" class="w-full p-2 border rounded">
         </div>
-        <div class="mb-6">
-          <input type="password" placeholder="비밀번호" class="w-full p-2 border rounded">
+        <div class="mb-4">
+          <input type="text" name="bio" placeholder="bio" class="w-full p-2 border rounded">
         </div>
         <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded font-bold">로그인</button>
       </form>
@@ -21,3 +29,38 @@ export const LoginPage = () => `
     </div>
   </main>
 `;
+};
+
+LoginPage.render = () => {
+  const $root = document.querySelector("#root");
+  const targetElement = $root ?? document.body;
+
+  targetElement.innerHTML = LoginPage();
+
+  document
+    .querySelector(`#${LOGIN_FORM_ID}`)
+    ?.addEventListener("submit", (e) => {
+      const $form = e.target as HTMLFormElement;
+      const formData = new FormData($form);
+
+      const email = formData.get("email");
+      const username = formData.get("username");
+      const bio = formData.get("bio");
+
+      if (!username) {
+        alert("유저이름을 입력해주세요");
+        return;
+      }
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username,
+          email,
+          bio,
+        }),
+      );
+
+      router.navigateTo("/");
+    });
+};
