@@ -17,13 +17,7 @@ const createRouter = (routes: { [key: string]: () => void }) => {
 };
 
 const routes = {
-  "/": () => {
-    const $root = document.querySelector("#root");
-
-    if (!$root) return;
-
-    $root.innerHTML = MainPage();
-  },
+  "/": MainPage.render,
   "/login": LoginPage.render,
   "/profile": () => {
     const $root = document.querySelector("#root");
