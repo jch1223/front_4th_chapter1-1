@@ -1,5 +1,7 @@
 import { router } from "@/core/router";
 
+const PROFILE_FORM_ID = "profile-form";
+
 export const ProfilePage = ({
   username,
   email,
@@ -18,7 +20,7 @@ export const ProfilePage = ({
           <ul class="flex justify-around">
             <li><a href="/" class="text-gray-600">홈</a></li>
             <li><a href="/profile" class="text-blue-600">프로필</a></li>
-            <li><a href="/login" class="text-gray-600">로그아웃</a></li>
+            <li><a id="logout" href="/login" class="text-gray-600">로그아웃</a></li>
           </ul>
         </nav>
 
@@ -27,7 +29,7 @@ export const ProfilePage = ({
             <h2 class="text-2xl font-bold text-center text-blue-600 mb-8">
               내 프로필
             </h2>
-            <form>
+            <form id="${PROFILE_FORM_ID}">
               <div class="mb-4">
                 <label
                   for="username"
@@ -102,8 +104,30 @@ ProfilePage.render = () => {
     return;
   }
 
-  const component = ProfilePage(user);
-  if (component) {
-    $root.innerHTML = component;
-  }
+  $root.innerHTML = ProfilePage(user);
+
+  document
+    .querySelector(`#${PROFILE_FORM_ID}`)
+    ?.addEventListener("submit", (e) => {
+      const $form = e.target as HTMLFormElement;
+      const formData = new FormData($form);
+
+      const email = formData.get("email");
+      const username = formData.get("username");
+      const bio = formData.get("bio");
+
+      if (!username) {
+        alert("유저이름을 입력해주세요");
+        return;
+      }
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          username,
+          email,
+          bio,
+        }),
+      );
+    });
 };
