@@ -1,14 +1,12 @@
 import { router } from "@/core/router";
 
-export const ProfilePage = () => {
-  // TODO: 로그인 상태 확인 로직
-
-  if (true) {
-    router.navigateTo("/login");
-    return;
-  }
-
-  return `
+export const ProfilePage = ({
+  username,
+  email,
+  bio,
+}: {
+  [key: string]: string;
+}) => `
   <div id="root">
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
@@ -20,7 +18,7 @@ export const ProfilePage = () => {
           <ul class="flex justify-around">
             <li><a href="/" class="text-gray-600">홈</a></li>
             <li><a href="/profile" class="text-blue-600">프로필</a></li>
-            <li><a href="#" class="text-gray-600">로그아웃</a></li>
+            <li><a href="/login" class="text-gray-600">로그아웃</a></li>
           </ul>
         </nav>
 
@@ -40,7 +38,7 @@ export const ProfilePage = () => {
                   type="text"
                   id="username"
                   name="username"
-                  value="홍길동"
+                  value="${username}"
                   class="w-full p-2 border rounded"
                 />
               </div>
@@ -54,7 +52,7 @@ export const ProfilePage = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value="hong@example.com"
+                  value="${email}"
                   class="w-full p-2 border rounded"
                 />
               </div>
@@ -70,8 +68,8 @@ export const ProfilePage = () => {
                   rows="4"
                   class="w-full p-2 border rounded"
                 >
-안녕하세요, 항해플러스에서 열심히 공부하고 있는 홍길동입니다.</textarea
-                >
+                  ${bio}
+                </textarea>
               </div>
               <button
                 type="submit"
@@ -90,4 +88,22 @@ export const ProfilePage = () => {
     </div>
   </div>
 `;
+
+ProfilePage.render = () => {
+  const $root = document.querySelector("#root");
+
+  if (!$root) return;
+
+  const localStorageUser = localStorage.getItem("user");
+  const user = localStorageUser ? JSON.parse(localStorageUser) : null;
+
+  if (!user) {
+    router.navigateTo("/login");
+    return;
+  }
+
+  const component = ProfilePage(user);
+  if (component) {
+    $root.innerHTML = component;
+  }
 };

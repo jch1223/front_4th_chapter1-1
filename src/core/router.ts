@@ -19,16 +19,7 @@ const createRouter = (routes: { [key: string]: () => void }) => {
 const routes = {
   "/": MainPage.render,
   "/login": LoginPage.render,
-  "/profile": () => {
-    const $root = document.querySelector("#root");
-
-    if (!$root) return;
-
-    const component = ProfilePage();
-    if (component) {
-      $root.innerHTML = component;
-    }
-  },
+  "/profile": ProfilePage.render,
   "/error": () => {
     const $root = document.querySelector("#root");
 
