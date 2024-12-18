@@ -33,6 +33,11 @@ export const LoginPage = () => {
 };
 
 LoginPage.render = () => {
+  if (userStore.getUser()) {
+    router.navigateTo("/");
+    return;
+  }
+
   const $root = document.querySelector("#root");
   const targetElement = $root ?? document.body;
 
@@ -41,11 +46,6 @@ LoginPage.render = () => {
   document
     .querySelector(`#${LOGIN_FORM_ID}`)
     ?.addEventListener("submit", (e) => {
-      if (userStore.getUser()) {
-        router.navigateTo("/");
-        return;
-      }
-
       const $form = e.target as HTMLFormElement;
       const formData = new FormData($form);
 
