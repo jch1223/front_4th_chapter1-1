@@ -3,7 +3,16 @@ import { User } from "@/store/userStore";
 export const LOGIN_ID = "login";
 export const LOGOUT_ID = "logout";
 
-export const Navigator = (user: User) => `
+export const Navigator = (user: User) => {
+  document.querySelector("#root")?.addEventListener("click", (e) => {
+    if (e.target instanceof HTMLAnchorElement) {
+      if (e.target.id === LOGOUT_ID) {
+        localStorage.removeItem("user");
+      }
+    }
+  });
+
+  return `
   <nav class="bg-white shadow-md p-2 sticky top-14">
     <ul class="flex justify-around">
       <li><a href="/" class="text-blue-600 font-bold">홈</a></li>
@@ -12,3 +21,4 @@ export const Navigator = (user: User) => `
     </ul>
   </nav>
 `;
+};

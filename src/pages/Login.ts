@@ -30,10 +30,10 @@ export const LoginPage = () => {
 };
 
 LoginPage.render = () => {
-  // if (userStore.getUser()) {
-  //   router.navigateTo("/");
-  //   return;
-  // }
+  if (userStore.getUser()) {
+    router.navigateTo("/");
+    return;
+  }
 
   const $root = document.querySelector("#root");
   const targetElement = $root ?? document.body;

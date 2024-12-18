@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { LOGOUT_ID, Navigator } from "@/components/Navigator";
+import { Navigator } from "@/components/Navigator";
 import { User, userStore } from "@/store/userStore";
 
 export const MainPage = (user: User) => `
@@ -112,8 +112,4 @@ MainPage.render = () => {
   const user = userStore.getUser();
 
   $root.innerHTML = MainPage(user);
-
-  document.querySelector(`#${LOGOUT_ID}`)?.addEventListener("click", () => {
-    localStorage.removeItem("user");
-  });
 };
