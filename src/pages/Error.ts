@@ -13,3 +13,11 @@ export const ErrorPage = () => `
     </div>
   </main>
 `;
+
+ErrorPage.render = () => {
+  const $root = document.querySelector("#root");
+
+  if (!$root) return;
+
+  $root.innerHTML = ErrorPage();
+};
