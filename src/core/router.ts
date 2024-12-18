@@ -24,13 +24,7 @@ const routes = {
 
     $root.innerHTML = MainPage();
   },
-  "/login": () => {
-    const $root = document.querySelector("#root");
-
-    if (!$root) return;
-
-    $root.innerHTML = LoginPage();
-  },
+  "/login": LoginPage.render,
   "/profile": () => {
     const $root = document.querySelector("#root");
 
