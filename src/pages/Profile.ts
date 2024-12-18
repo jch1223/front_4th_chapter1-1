@@ -79,11 +79,6 @@ export const ProfilePage = ({ username, email, bio }: User) => `
 `;
 
 ProfilePage.render = () => {
-  if (!userStore.getUser()) {
-    router.navigateTo("/login");
-    return;
-  }
-
   const $root = document.querySelector("#root");
 
   if (!$root) return;
