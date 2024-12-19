@@ -5,14 +5,11 @@ const LOGIN_FORM_ID = "login-form";
 
 export const LoginPage = () => {
   document.getElementById("root")?.addEventListener("submit", (e) => {
-    if (!(e.target instanceof HTMLElement)) return;
+    if (!(e.target instanceof HTMLFormElement)) return;
 
     if (e.target.id === LOGIN_FORM_ID) {
-      if (!(e.target instanceof HTMLFormElement)) return;
-
       const $form = e.target;
       const formData = new FormData($form);
-
       const username = formData.get("username")?.toString();
 
       if (!username) {
@@ -56,7 +53,7 @@ export const LoginPage = () => {
 };
 
 LoginPage.render = () => {
-  const $root = document.querySelector("#root");
+  const $root = document.getElementById("root");
   const targetElement = $root ?? document.body;
 
   targetElement.innerHTML = LoginPage();

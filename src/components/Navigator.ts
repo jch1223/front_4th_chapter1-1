@@ -4,11 +4,11 @@ export const LOGIN_ID = "login";
 export const LOGOUT_ID = "logout";
 
 export const Navigator = (user: User) => {
-  document.querySelector("#root")?.addEventListener("click", (e) => {
-    if (e.target instanceof HTMLAnchorElement) {
-      if (e.target.id === LOGOUT_ID) {
-        userStore.removeUser();
-      }
+  document.getElementById("root")?.addEventListener("click", (e) => {
+    if (!(e.target instanceof HTMLAnchorElement)) return;
+
+    if (e.target.id === LOGOUT_ID) {
+      userStore.removeUser();
     }
   });
 

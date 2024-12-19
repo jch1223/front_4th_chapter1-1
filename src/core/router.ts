@@ -59,4 +59,4 @@ const hashRouter = createHashRouter(routes);
 
 const router = window.location.hash ? hashRouter : browserRouter;
 
-export { router, hashRouter };
+export { router };

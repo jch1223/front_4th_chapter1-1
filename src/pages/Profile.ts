@@ -7,11 +7,9 @@ const PROFILE_FORM_ID = "profile-form";
 
 export const ProfilePage = ({ username, email, bio }: User) => {
   document.getElementById("root")?.addEventListener("submit", (e) => {
-    if (!(e.target instanceof HTMLElement)) return;
+    if (!(e.target instanceof HTMLFormElement)) return;
 
     if (e.target.id === PROFILE_FORM_ID) {
-      if (!(e.target instanceof HTMLFormElement)) return;
-
       const $form = e.target;
       const formData = new FormData($form);
 
@@ -106,7 +104,7 @@ export const ProfilePage = ({ username, email, bio }: User) => {
 };
 
 ProfilePage.render = () => {
-  const $root = document.querySelector("#root");
+  const $root = document.getElementById("root");
 
   if (!$root) return;
 

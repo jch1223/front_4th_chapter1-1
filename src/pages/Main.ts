@@ -105,7 +105,7 @@ export const MainPage = (user: User) => `
 `;
 
 MainPage.render = () => {
-  const $root = document.querySelector("#root");
+  const $root = document.getElementById("root");
 
   if (!$root) return;
 
