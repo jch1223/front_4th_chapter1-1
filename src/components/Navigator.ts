@@ -1,4 +1,4 @@
-import { User } from "@/store/userStore";
+import { User, userStore } from "@/store/userStore";
 
 export const LOGIN_ID = "login";
 export const LOGOUT_ID = "logout";
@@ -7,7 +7,7 @@ export const Navigator = (user: User) => {
   document.querySelector("#root")?.addEventListener("click", (e) => {
     if (e.target instanceof HTMLAnchorElement) {
       if (e.target.id === LOGOUT_ID) {
-        localStorage.removeItem("user");
+        userStore.removeUser();
       }
     }
   });

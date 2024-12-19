@@ -15,6 +15,9 @@ const createUserStore = () => {
     setUser(user: User) {
       localStorage.setItem("user", JSON.stringify(user));
     },
+    removeUser() {
+      localStorage.removeItem("user");
+    },
   };
 };
 

@@ -1,7 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Navigator } from "@/components/Navigator";
-import { router } from "@/core/router";
 import { User, userStore } from "@/store/userStore";
 
 const PROFILE_FORM_ID = "profile-form";
