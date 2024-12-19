@@ -9,6 +9,11 @@ export const render = () => {
     router.navigateTo(window.location.pathname);
   });
 
+  window.addEventListener("hashchange", () => {
+    const pathname = window.location.hash.split("#")[1];
+    router.navigateTo(pathname);
+  });
+
   window.addEventListener("submit", (e) => {
     e.preventDefault();
   });

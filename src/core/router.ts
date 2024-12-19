@@ -4,14 +4,30 @@ import { LoginPage } from "@/pages/Login";
 import { ProfilePage } from "@/pages/Profile";
 import { userStore } from "@/store/userStore";
 
-const createRouter = (routes: { [key: string]: () => void }) => {
+const createRouter = (routes: Record<string, () => void>) => {
   return {
     navigateTo(path: string) {
       if (!Object.keys(routes).includes(path)) {
-        path = "/error";
+        routes["/error"]();
+        return;
       }
 
       history.pushState(null, "", path);
+      routes[path]();
+    },
+  };
+};
+
+const createHashRouter = (routes: Record<string, () => void>) => {
+  return {
+    navigateTo(path: string) {
+      if (!Object.keys(routes).includes(`${path}`)) {
+        window.location.hash = `#/error`;
+        routes["/error"]();
+        return;
+      }
+
+      window.location.hash = `#${path}`;
       routes[path]();
     },
   };
@@ -38,6 +54,9 @@ const routes = {
   "/error": ErrorPage.render,
 };
 
-const router = createRouter(routes);
+const browserRouter = createRouter(routes);
+const hashRouter = createHashRouter(routes);
 
-export { router };
+const router = window.location.hash ? hashRouter : browserRouter;
+
+export { router, hashRouter };
