@@ -4,6 +4,32 @@ import { userStore } from "@/store/userStore";
 const LOGIN_FORM_ID = "login-form";
 
 export const LoginPage = () => {
+  document.getElementById("root")?.addEventListener("submit", (e) => {
+    if (!(e.target instanceof HTMLElement)) return;
+
+    if (e.target.id === LOGIN_FORM_ID) {
+      if (!(e.target instanceof HTMLFormElement)) return;
+
+      const $form = e.target;
+      const formData = new FormData($form);
+
+      const username = formData.get("username")?.toString();
+
+      if (!username) {
+        alert("유저이름을 입력해주세요");
+        return;
+      }
+
+      userStore.setUser({
+        username,
+        email: "",
+        bio: "",
+      });
+
+      router.navigateTo("/");
+    }
+  });
+
   return `
   <main class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -34,26 +60,4 @@ LoginPage.render = () => {
   const targetElement = $root ?? document.body;
 
   targetElement.innerHTML = LoginPage();
-
-  document
-    .querySelector(`#${LOGIN_FORM_ID}`)
-    ?.addEventListener("submit", (e) => {
-      const $form = e.target as HTMLFormElement;
-      const formData = new FormData($form);
-
-      const username = formData.get("username")?.toString();
-
-      if (!username) {
-        alert("유저이름을 입력해주세요");
-        return;
-      }
-
-      userStore.setUser({
-        username,
-        email: "",
-        bio: "",
-      });
-
-      router.navigateTo("/");
-    });
 };

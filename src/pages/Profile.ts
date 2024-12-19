@@ -5,7 +5,34 @@ import { User, userStore } from "@/store/userStore";
 
 const PROFILE_FORM_ID = "profile-form";
 
-export const ProfilePage = ({ username, email, bio }: User) => `
+export const ProfilePage = ({ username, email, bio }: User) => {
+  document.getElementById("root")?.addEventListener("submit", (e) => {
+    if (!(e.target instanceof HTMLElement)) return;
+
+    if (e.target.id === PROFILE_FORM_ID) {
+      if (!(e.target instanceof HTMLFormElement)) return;
+
+      const $form = e.target;
+      const formData = new FormData($form);
+
+      const email = formData.get("email")?.toString();
+      const username = formData.get("username")?.toString();
+      const bio = formData.get("bio")?.toString();
+
+      if (!username) {
+        alert("유저이름을 입력해주세요");
+        return;
+      }
+
+      userStore.setUser({
+        username,
+        email,
+        bio,
+      });
+    }
+  });
+
+  return `
   <div id="root">
     <div class="bg-gray-100 min-h-screen flex justify-center">
       <div class="max-w-md w-full">
@@ -76,6 +103,7 @@ export const ProfilePage = ({ username, email, bio }: User) => `
     </div>
   </div>
 `;
+};
 
 ProfilePage.render = () => {
   const $root = document.querySelector("#root");
@@ -85,26 +113,4 @@ ProfilePage.render = () => {
   const user = userStore.getUser();
 
   $root.innerHTML = ProfilePage(user);
-
-  document
-    .querySelector(`#${PROFILE_FORM_ID}`)
-    ?.addEventListener("submit", (e) => {
-      const $form = e.target as HTMLFormElement;
-      const formData = new FormData($form);
-
-      const email = formData.get("email")?.toString();
-      const username = formData.get("username")?.toString();
-      const bio = formData.get("bio")?.toString();
-
-      if (!username) {
-        alert("유저이름을 입력해주세요");
-        return;
-      }
-
-      userStore.setUser({
-        username,
-        email,
-        bio,
-      });
-    });
 };
